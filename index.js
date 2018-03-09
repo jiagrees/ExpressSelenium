@@ -1,27 +1,20 @@
 var chromedriver=require('chromedriver'); 
-
 var webdriver = require('selenium-webdriver'); 
+let config =require('./config.json');
 By = webdriver.By,
 until = webdriver.until;
-// var chromeCapabilities = webdriver.Capabilities.chrome();
-// //setting chrome options to start the browser fully maximized
-// var chromeOptions = {
-//     'args': ['--user-data-dir', '--C:/Users/jiazhiw/AppData/Local/Google/Chrome/User Data']
-// };
-// chromeCapabilities.set('chromeOptions', chromeOptions);
-// var driver = new webdriver.Builder().
-//     withCapabilities(chromeCapabilities).
-//     build();
-//driver.get('http://baidu.com')
-
 var driver = new webdriver.Builder().forBrowser('chrome').build();
 
-//driver.get("https://autowebtest.github.io/");
-driver.get('https://www.baidu.com');
-driver.findElement(By.id('kw')).sendKeys('webdriver');
-driver.findElement(By.id('su')).click();
-driver.wait(until.titleIs('webdriver_百度搜索'), 30*1000);
-driver.quit();
+driver.get(config.Url);
+driver.switchTo().frame('alibaba-login-box');
+driver.findElement(By.id('fm-login-id')).sendKeys(config.username);
+driver.findElement(By.id('fm-login-password')).sendKeys(config.password);
+driver.findElement(By.id('fm-login-submit')).click();
+driver.wait(until.elementLocated(By.linkText("管理产品")), 30*1000);
+driver.findElement(By.linkText("管理产品")).click();
+
+//driver.wait(until.titleIs('webdriver_百度搜索'), 30*1000);
+//driver.quit();
 //driver.sleep(20 * 1000).then(function(){ 
 //driver.quit();
 //})
